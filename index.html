@@ -48,10 +48,8 @@
             if (snapshot.exists()) {
                 const user = snapshot.val();
                 userName.textContent = user.name;
-                userBustSize.textContent = user.bustSize;
+                userBustSize.textContent = user.breastVolume;
                 console.log(snapshot.val());
-                console.log(user.name);
-                console.log(user.bustSize);
           } else {
             console.log("No data available");
           }
