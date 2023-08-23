@@ -49,7 +49,9 @@
             const user = snapshot.val();
             if (user) {
                 userName.textContent = user.name;
+                console.log(user.name);
                 userBustSize.textContent = user.bustSize;
+                console.log(user.bustSize);
             } else {
                 userDetails.innerHTML = '<p>User not found</p>';
             }
