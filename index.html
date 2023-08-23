@@ -68,6 +68,35 @@
             bustSize: bustSize
         });
       });
+
+
+        // Function to update the bust size based on growth rate
+      function updateBustSize(userId) {
+        firebase.database().ref('users').child(userId).once('value', function(snapshot) {
+          const user = snapshot.val();
+          if (user) {
+            const currentTime = Date.now();
+            const timeSinceLastUpdate = currentTime - user.lastUpdate;
+            const growthFactor = user.growthRate / ( 1000); // Convert growthRate to per-millisecond
+            const bustSizeIncrease = growthFactor * timeSinceLastUpdate;
+    
+            const updatedBustSize = user.breastVolume + bustSizeIncrease;
+            const updates = {
+              breastVolume: updatedBustSize,
+              lastUpdate: currentTime
+            };
+    
+            firebase.database().ref('users').child(userId).update(updates);
+          }
+        });
+      }
+    
+      // Set up periodic updates
+      if (userId) {
+        setInterval(() => {
+          updateBustSize(userId);
+        }, 10000); // Update every 10 seconds
+      }
     </script>
 
     <form id="userForm">
