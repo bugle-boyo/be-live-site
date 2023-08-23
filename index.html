@@ -36,8 +36,9 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
 
+        const database = getDatabase(app);
         // Reference to the "users" node in the database
-        const usersRef = firebase.database().ref("users");
+        const usersRef = database().ref("users");
         
         // Retrieve user data
         usersRef.on("value", (snapshot) => {
