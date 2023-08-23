@@ -60,29 +60,31 @@
 </form>
 
 <script>
-  const userDetails = document.getElementById('userDetails');
-  const userName = document.getElementById('userName');
-  const userBustSize = document.getElementById('userBustSize');
-
-  // Get the user ID from the query parameter
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('id');
-
-  // Retrieve user data from Firebase based on the user ID
-  if (userId) {
-    console.log(userId);
-    firebase.database().ref('users').child(userId).once('value', function(snapshot) {
-      const user = snapshot.val();
-      if (user) {
-        userName.textContent = user.name;
-        userBustSize.textContent = user.bustSize;
-      } else {
-        userDetails.innerHTML = '<p>User not found</p>';
-      }
-    });
-  } else {
-    userDetails.innerHTML = '<p>User ID not provided</p>';
-  }
+    const app = firebase.initializeApp(firebaseConfig);
+    
+    const userDetails = document.getElementById('userDetails');
+    const userName = document.getElementById('userName');
+    const userBustSize = document.getElementById('userBustSize');
+    
+    // Get the user ID from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    
+    // Retrieve user data from Firebase based on the user ID
+    if (userId) {
+        console.log(userId);
+        firebase.database().ref('users').child(userId).once('value', function(snapshot) {
+            const user = snapshot.val();
+            if (user) {
+                userName.textContent = user.name;
+                userBustSize.textContent = user.bustSize;
+            } else {
+                userDetails.innerHTML = '<p>User not found</p>';
+            }
+        });
+    } else {
+        userDetails.innerHTML = '<p>User ID not provided</p>';
+    }
 </script>
     
 </body>
