@@ -70,6 +70,7 @@
 
   // Retrieve user data from Firebase based on the user ID
   if (userId) {
+    console.log(userId);
     firebase.database().ref('users').child(userId).once('value', function(snapshot) {
       const user = snapshot.val();
       if (user) {
