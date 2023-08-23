@@ -79,7 +79,8 @@
             const timeSinceLastUpdate = currentTime - user.lastUpdate;
             const growthFactor = user.growthRate / ( 1000); // Convert growthRate to per-millisecond
             const bustSizeIncrease = growthFactor * timeSinceLastUpdate;
-    
+            console.log(user);
+              console.log(user.breastVolume);
             const updatedBustSize = user.breastVolume + bustSizeIncrease;
             const updates = {
               breastVolume: updatedBustSize,
