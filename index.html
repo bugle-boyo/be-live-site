@@ -45,11 +45,13 @@
 
         const dbRef = firebase.database().ref();
         dbRef.child("users").child(userId).once('value', function(snapshot) {
-          if (snapshot.exists()) {
-            console.log(snapshot.val());
-            const user = snapshot.val();
-            userName.textContent = user.name;
-            userBustSize.textContent = user.bustSize;
+            if (snapshot.exists()) {
+                const user = snapshot.val();
+                userName.textContent = user.name;
+                userBustSize.textContent = user.bustSize;
+                console.log(snapshot.val());
+                console.log(user.name);
+                console.log(user.bustSize);
           } else {
             console.log("No data available");
           }
