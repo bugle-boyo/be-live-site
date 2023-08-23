@@ -66,7 +66,7 @@
     // }
 
     const dbRef = firebase.database().ref();
-    dbRef.child("users").child(userId).get().once('value', function(snapshot) {
+    dbRef.child("users").child(userId).once('value', function(snapshot) {
       if (snapshot.exists()) {
         console.log(snapshot.val());
       } else {
