@@ -42,28 +42,39 @@
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('id');
     
-    // Retrieve user data from Firebase based on the user ID
-    if (userId) {
-        console.log(userId);
-        firebase.database().ref('users').child(userId).get().then( (snapshot) => {
-            if (snapshot.exists()) {
-                console.log(snapshot.val());
-            } else {
-                console.log("No data available");
-            }
-            const user = snapshot.val();
-            if (user) {
-                userName.textContent = user.name;
-                console.log(user.name);
-                userBustSize.textContent = user.bustSize;
-                console.log(user.bustSize);
-            } else {
-                userDetails.innerHTML = '<p>User not found</p>';
-            }
-        });
-    } else {
-        userDetails.innerHTML = '<p>User ID not provided</p>';
-    }
+    // // Retrieve user data from Firebase based on the user ID
+    // if (userId) {
+    //     console.log(userId);
+    //     firebase.database().ref('users').child(userId).get().then( (snapshot) => {
+    //         if (snapshot.exists()) {
+    //             console.log(snapshot.val());
+    //         } else {
+    //             console.log("No data available");
+    //         }
+    //         const user = snapshot.val();
+    //         if (user) {
+    //             userName.textContent = user.name;
+    //             console.log(user.name);
+    //             userBustSize.textContent = user.bustSize;
+    //             console.log(user.bustSize);
+    //         } else {
+    //             userDetails.innerHTML = '<p>User not found</p>';
+    //         }
+    //     });
+    // } else {
+    //     userDetails.innerHTML = '<p>User ID not provided</p>';
+    // }
+
+    const dbRef = firebase.database().ref();
+    dbRef.child("users").child(userId).get().then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
     </script>
 
     <form id="userForm">
