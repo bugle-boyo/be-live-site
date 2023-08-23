@@ -69,6 +69,8 @@
     dbRef.child("users").child(userId).once('value', function(snapshot) {
       if (snapshot.exists()) {
         console.log(snapshot.val());
+        userName.textContent = user.name;
+        userBustSize.textContent = user.bustSize;
       } else {
         console.log("No data available");
       }
