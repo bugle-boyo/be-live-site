@@ -32,37 +32,9 @@
         
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
-    </script>
 
-<form id="userForm">
-  <input type="text" id="push name" placeholder="Name">
-  <input type="text" id="push bustSize" placeholder="Bust Size">
-  <button type="create new entry">Submit</button>
-</form>
 
-<script>
-  const userForm = document.getElementById('userForm');
-  userForm.addEventListener('submit', function (event) {
-    event.preventDefault();
-    const name = document.getElementById('name').value;
-    const bustSize = document.getElementById('bustSize').value;
-    firebase.database().ref('users').push({
-      name: name,
-      bustSize: bustSize
-    });
-  });
-</script>
-
-<form id="userDetails">
-  <h2>User Details</h2>
-  <p><strong>Name:</strong> <span id="userName"></span></p>
-  <p><strong>Bust Size:</strong> <span id="userBustSize"></span></p>
-</form>
-
-<script>
-    const app = firebase.initializeApp(firebaseConfig);
-    
-    const userDetails = document.getElementById('userDetails');
+            const userDetails = document.getElementById('userDetails');
     const userName = document.getElementById('userName');
     const userBustSize = document.getElementById('userBustSize');
     
@@ -85,7 +57,32 @@
     } else {
         userDetails.innerHTML = '<p>User ID not provided</p>';
     }
+    </script>
+
+<form id="userForm">
+  <input type="text" id="push name" placeholder="Name">
+  <input type="text" id="push bustSize" placeholder="Bust Size">
+  <button type="create new user">Create new User</button>
+</form>
+
+<script>
+  const userForm = document.getElementById('userForm');
+  userForm.addEventListener('create new user', function (event) {
+    event.preventDefault();
+    const name = document.getElementById('push name').value;
+    const bustSize = document.getElementById('push bustSize').value;
+    firebase.database().ref('users').push({
+      name: name,
+      bustSize: bustSize
+    });
+  });
 </script>
+
+<form id="userDetails">
+  <h2>User Details</h2>
+  <p><strong>Name:</strong> <span id="userName"></span></p>
+  <p><strong>Bust Size:</strong> <span id="userBustSize"></span></p>
+</form>
     
 </body>
 </html>
