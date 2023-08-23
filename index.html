@@ -12,17 +12,13 @@
         <p id="time-since"></p>
     </div>
     <script src="script.js"></script>
+
+    <!-- Add these scripts to the <body> of your HTML -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+
     <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-analytics.js";
-        import firebase from "firebase/app";
-        import "firebase/compat/database";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-        
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
         apiKey: "AIzaSyBOr937VuJhYZknU44JbLgCc3d_5Yssdqk",
         authDomain: "realtime-be-backend.firebaseapp.com",
@@ -35,18 +31,27 @@
         };
         
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-
-        const db = getDatabase(app);
-        // Reference to the "users" node in the database
-        const usersRef = db().ref("users");
-        
-        // Retrieve user data
-        usersRef.on("value", (snapshot) => {
-        const users = snapshot.val();
-        console.log(users);
-  });
+        const app = firebase.initializeApp(firebaseConfig);
     </script>
+
+<form id="userForm">
+  <input type="text" id="name" placeholder="Name">
+  <input type="text" id="bustSize" placeholder="Bust Size">
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  const userForm = document.getElementById('userForm');
+  userForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const name = document.getElementById('name').value;
+    const bustSize = document.getElementById('bustSize').value;
+    firebase.database().ref('users').push({
+      name: name,
+      bustSize: bustSize
+    });
+  });
+</script>
+    
 </body>
 </html>
