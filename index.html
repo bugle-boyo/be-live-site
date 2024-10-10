@@ -1,117 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Time Since 1 o'clock</title>
+  <title>Firebase User Input</title>
+  <!-- Add Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+  <!-- Link to external JavaScript file -->
+  <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="time-container">
-        <h1>Time Since 1 o'clock Today:</h1>
-        <p id="time-since"></p>
-    </div>
-    <script src="script.js"></script>
+  <h1>Add User</h1>
 
-    <!-- Add these scripts to the <body> of your HTML -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
-
-    <script type="module">
-        const firebaseConfig = {
-        apiKey: "AIzaSyBOr937VuJhYZknU44JbLgCc3d_5Yssdqk",
-        authDomain: "realtime-be-backend.firebaseapp.com",
-        databaseURL: "https://realtime-be-backend-default-rtdb.firebaseio.com",
-        projectId: "realtime-be-backend",
-        storageBucket: "realtime-be-backend.appspot.com",
-        messagingSenderId: "820066977221",
-        appId: "1:820066977221:web:0cc94309ccd83aed5277ac",
-        measurementId: "G-N2GBYFYWJL"
-        };
-        
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-
-
-        const userDetails = document.getElementById('userDetails');
-        const userName = document.getElementById('userName');
-        const userBustSize = document.getElementById('userBustSize');
+  <form id="userForm">
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username" required><br><br>
     
-        // Get the user ID from the query parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id');
-    
+    <label for="breast_volume">Breast Volume:</label><br>
+    <input type="number" id="breast_volume" name="breast_volume" required><br><br>
 
-        const dbRef = firebase.database().ref();
-        dbRef.child("users").child(userId).once('value', function(snapshot) {
-            if (snapshot.exists()) {
-                const user = snapshot.val();
-                userName.textContent = user.name;
-                userBustSize.textContent = user.breastVolume;
-                console.log(snapshot.val());
-          } else {
-            console.log("No data available");
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
-
-
-        const userForm = document.getElementById('userForm');
-        userForm.addEventListener('create new user', function (event) {
-        event.preventDefault();
-        const name = document.getElementById('push name').value;
-        const bustSize = document.getElementById('push bustSize').value;
-        firebase.database().ref('users').push({
-            name: name,
-            bustSize: bustSize
-        });
-      });
-
-
-        // Function to update the bust size based on growth rate
-      function updateBustSize(userId) {
-        firebase.database().ref('users').child(userId).once('value', function(snapshot) {
-          const user = snapshot.val();
-          if (user) {
-            const currentTime = Date.now();
-            const timeSinceLastUpdate = currentTime - user.lastUpdate;
-            const growthFactor = user.growthRate / ( 1000); // Convert growthRate to per-millisecond
-            const bustSizeIncrease = growthFactor * timeSinceLastUpdate;
-            const updatedBustSize = user.breastVolume + bustSizeIncrease;
-              console.log(growthFactor);
-              console.log(timeSinceLastUpdate);
-              console.log(bustSizeIncrease);
-            const updates = {
-              breastVolume: updatedBustSize,
-              lastUpdate: currentTime
-            };
-    
-            firebase.database().ref('users').child(userId).update(updates);
-          }
-        });
-      }
-    
-      // Set up periodic updates
-      if (userId) {
-        setInterval(() => {
-          updateBustSize(userId);
-        }, 10000); // Update every 10 seconds
-      }
-    </script>
-
-    <form id="userForm">
-      <input type="text" id="push name" placeholder="Name">
-      <input type="text" id="push bustSize" placeholder="Bust Size">
-      <button type="create new user">Create new User</button>
-    </form>
-
-    <form id="userDetails">
-      <h2>User Details</h2>
-      <p><strong>Name:</strong> <span id="userName"></span></p>
-      <p><strong>Bust Size:</strong> <span id="userBustSize"></span></p>
-    </form>
-    
+    <input type="submit" value="Submit">
+  </form>
 </body>
 </html>
