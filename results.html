@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .result {
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="result">
+        <h1>Subject ID:</h1>
+        <p id="displayID"></p>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const subjectID = params.get('subjectID');
+
+        if (subjectID) {
+            document.getElementById('displayID').textContent = subjectID;
+        } else {
+            document.body.innerHTML = "<h1>No Subject ID provided</h1>";
+        }
+    </script>
+</body>
+</html>
