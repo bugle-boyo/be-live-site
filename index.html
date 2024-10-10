@@ -1,59 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Firebase User Input</title>
-  <!-- Add Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
-  <script>
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyBOr937VuJhYZknU44JbLgCc3d_5Yssdqk",
-        authDomain: "realtime-be-backend.firebaseapp.com",
-        databaseURL: "https://realtime-be-backend-default-rtdb.firebaseio.com",
-        projectId: "realtime-be-backend",
-        storageBucket: "realtime-be-backend.appspot.com",
-        messagingSenderId: "820066977221",
-        appId: "1:820066977221:web:0cc94309ccd83aed5277ac",
-        measurementId: "G-N2GBYFYWJL"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // Form submission event
-    document.getElementById('userForm').addEventListener('submit', function(e) {
-      e.preventDefault(); // Prevent form submission
-
-      // Get user input
-      const username = document.getElementById('username').value;
-      const breastVolume = document.getElementById('breast_volume').value;
-
-      // Push new user data to Firebase
-      firebase.database().ref('users/').push({
-        username: username,
-        breast_volume: breastVolume
-      }).then(function() {
-        alert('User added successfully!');
-        document.getElementById('userForm').reset(); // Reset form after submission
-      }).catch(function(error) {
-        alert('Error: ' + error.message);
-      });
-    });
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Query</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
 </head>
 <body>
-  <h1>Add User</h1>
+    <h1>Firebase Database Query</h1>
+    <div id="output"></div>
 
-  <form id="userForm">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username" required><br><br>
-    
-    <label for="breast_volume">Breast Volume:</label><br>
-    <input type="number" id="breast_volume" name="breast_volume" required><br><br>
+    <script>
+        // Your Firebase configuration (replace this with your actual config)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-    <input type="submit" value="Submit">
-  </form>
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Reference to the database (adjust based on your structure)
+        const dbRef = database.ref('entries'); // Assuming your data is under 'entries'
+
+        // Querying the database and displaying results
+        dbRef.once('value', (snapshot) => {
+            const data = snapshot.val();
+            let output = '';
+
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    const entry = data[key];
+                    output += `<p>Username: ${entry.username}, Breast Volume: ${entry.breast_volume}</p>`;
+                });
+            } else {
+                output = '<p>No entries found</p>';
+            }
+
+            document.getElementById('output').innerHTML = output;
+        });
+    </script>
 </body>
 </html>
