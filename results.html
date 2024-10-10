@@ -70,7 +70,7 @@
         
             firebase.database().ref('users').child(userId).update(updates);
         
-            document.getElementById('breastVolume').textContent = updatedBustSize;
+            document.getElementById('breastVolume').textContent = mapToCupSize(user.bandSize,updateBustSize);;
           }
         });
         }
@@ -134,7 +134,8 @@
                 if (snapshot.exists()) {
                     // If subject ID exists, redirect to the results page
                     const volume = snapshot.val().breastVolume
-                    document.getElementById('breastVolume').textContent = volume;
+                    const bandSize = snapshot.val().bandSize
+                    document.getElementById('breastVolume').textContent = mapToCupSize(bandSize,volume);
                 } else {
                     // If not found, alert the user
                     alert("User does not exist.");
