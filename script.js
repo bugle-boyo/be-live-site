@@ -1,23 +1,35 @@
-// Function to calculate the time difference in hours and minutes
-function getTimeSinceOne() {
-    const oneOClock = new Date();
-    oneOClock.setHours(1, 0, 0, 0); // Set to 1 o'clock today
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyBOr937VuJhYZknU44JbLgCc3d_5Yssdqk",
+    authDomain: "realtime-be-backend.firebaseapp.com",
+    databaseURL: "https://realtime-be-backend-default-rtdb.firebaseio.com",
+    projectId: "realtime-be-backend",
+    storageBucket: "realtime-be-backend.appspot.com",
+    messagingSenderId: "820066977221",
+    appId: "1:820066977221:web:0cc94309ccd83aed5277ac",
+    measurementId: "G-N2GBYFYWJL"
+};
 
-    const currentTime = new Date();
-    const timeDiff = currentTime - oneOClock;
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
-    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+// Form submission event
+document.getElementById('userForm').addEventListener('submit', function(e) {
+  e.preventDefault(); // Prevent form submission
 
-    return `${hours} hours and ${minutes} minutes`;
-}
+  // Get user input
+  const username = document.getElementById('username').value;
+  const breastVolume = document.getElementById('breast_volume').value;
 
-// Update the time display
-function updateTimeDisplay() {
-    const timeSinceElement = document.getElementById("time-since");
-    timeSinceElement.textContent = getTimeSinceOne();
-}
-
-// Update time display on page load and every minute
-updateTimeDisplay();
-setInterval(updateTimeDisplay, 60000);
+  // Push new user data to Firebase
+  firebase.database().ref('users/').push({
+    username: username,
+    breast_volume: breastVolume
+  }).then(function() {
+    alert('User added successfully!');
+    document.getElementById('userForm').reset(); // Reset form after submission
+  }).catch(function(error) {
+    alert('Error: ' + error.message);
+  });
+});
