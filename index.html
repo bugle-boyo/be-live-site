@@ -42,7 +42,7 @@
             if (data) {
                 Object.keys(data).forEach(key => {
                     const entry = data[key];
-                    output += `<p>Username: ${entry.username}, Breast Volume: ${entry.breast_volume}</p>`;
+                    output += `<p>Username: ${entry.name}, Breast Volume: ${entry.breastVolume}</p>`;
                 });
             } else {
                 output = '<p>No entries found</p>';
