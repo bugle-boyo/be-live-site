@@ -36,14 +36,55 @@
     <div class="result">
         <h1>Subject ID:</h1>
         <p id="displayID"></p>
+        <h1>Breast Volume:</h1>
+        <p id="breastVolume"></p>
     </div>
 
+    <button id="takeMeasurementsBtn">Take Measurements</button>
     <button id="takePillBtn">Take Pill</button>
     <button id="returnBtn">Return</button>
 
-    <script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+    
+    <script type="module">
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOr937VuJhYZknU44JbLgCc3d_5Yssdqk",
+            authDomain: "realtime-be-backend.firebaseapp.com",
+            databaseURL: "https://realtime-be-backend-default-rtdb.firebaseio.com",
+            projectId: "realtime-be-backend",
+            storageBucket: "realtime-be-backend.appspot.com",
+            messagingSenderId: "820066977221",
+            appId: "1:820066977221:web:0cc94309ccd83aed5277ac",
+            measurementId: "G-N2GBYFYWJL"
+        };
+
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
         const params = new URLSearchParams(window.location.search);
         const subjectID = params.get('subjectID');
+
+        const subjectRef = database.ref('users/' + subjectID);
+
+        subjectRef.once('value')
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    // If subject ID exists, redirect to the results page
+                    const volume = snapshot.val().breastVolume
+                    document.getElementById('breastVolume').textContent = volume;
+                } else {
+                    // If not found, alert the user
+                    alert("User does not exist.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching data: ", error);
+            });
 
         if (subjectID) {
             document.getElementById('displayID').textContent = subjectID;
@@ -51,15 +92,12 @@
             document.body.innerHTML = "<h1>No Subject ID provided</h1>";
         }
 
-        // Add functionality for the buttons
         document.getElementById('takePillBtn').onclick = function() {
-            // You can add functionality here to log the pill taken
             alert("Pill taken!");
         };
 
         document.getElementById('returnBtn').onclick = function() {
-            // Redirect to the home page
-            window.location.href = 'index.html'; // Change 'index.html' to your homepage file name if different
+            window.location.href = 'index.html';
         };
     </script>
 </body>
