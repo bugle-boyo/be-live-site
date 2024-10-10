@@ -12,18 +12,21 @@
     <h1>Firebase Database Query</h1>
     <div id="output"></div>
 
-    <script>
-        // Your Firebase configuration (replace this with your actual config)
-        const firebaseConfig = {
+    <script type="module">
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+          import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
+        
+          const firebaseConfig = {
             apiKey: "AIzaSyBOr937VuJhYZknU44JbLgCc3d_5Yssdqk",
             authDomain: "realtime-be-backend.firebaseapp.com",
             databaseURL: "https://realtime-be-backend-default-rtdb.firebaseio.com",
             projectId: "realtime-be-backend",
-            storageBucket: "realtime-be-backend.appspot.com",
+            storageBucket: "realtime-be-backend.appspot.com"
             messagingSenderId: "820066977221",
             appId: "1:820066977221:web:0cc94309ccd83aed5277ac",
             measurementId: "G-N2GBYFYWJL"
-        };
+          };
+
 
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
