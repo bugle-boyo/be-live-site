@@ -32,7 +32,7 @@
         const database = firebase.database();
 
         // Reference to the database (adjust based on your structure)
-        const dbRef = database.ref('entries'); // Assuming your data is under 'entries'
+        const dbRef = database.ref('users'); // Assuming your data is under 'entries'
 
         // Querying the database and displaying results
         dbRef.once('value', (snapshot) => {
