@@ -7,9 +7,11 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100vh; /* Makes the body take up the full viewport height */
+            margin: 0;
             background-color: #f0f0f0;
         }
         .result {
@@ -36,7 +38,7 @@
     <div class="result">
         <h1>Subject ID:</h1>
         <p id="displayID"></p>
-        <h1>Breast Volume:</h1>
+        <h1>Cup Size:</h1>
         <p id="breastVolume"></p>
     </div>
 
