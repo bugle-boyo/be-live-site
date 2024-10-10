@@ -69,6 +69,8 @@
             };
     
             firebase.database().ref('users').child(userId).update(updates);
+    
+            document.getElementById('breastVolume').textContent = updatedBustSize;
           }
         });
       }
@@ -116,6 +118,10 @@
             document.body.innerHTML = "<h1>No Subject ID provided</h1>";
         }
 
+        document.getElementById('takeMeasurements').onclick = function() {
+            updateBustSize(subjectID)
+        };
+        
         document.getElementById('takePillBtn').onclick = function() {
             alert("Pill taken!");
         };
