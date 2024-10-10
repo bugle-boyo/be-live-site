@@ -49,9 +49,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
     
     <script type="module">
-
-      // Function to update the bust size based on growth rate
-      function updateBustSize(userId) {
+        
+        // Function to update the bust size based on growth rate
+        function updateBustSize(userId) {
         firebase.database().ref('users').child(userId).once('value', function(snapshot) {
           const user = snapshot.val();
           if (user) {
@@ -67,13 +67,46 @@
               breastVolume: updatedBustSize,
               lastUpdate: currentTime
             };
-    
+        
             firebase.database().ref('users').child(userId).update(updates);
-    
+        
             document.getElementById('breastVolume').textContent = updatedBustSize;
           }
         });
-      }
+        }
+
+        const cups = ["Flat :(","AA","A","B","C","D","DD/E","DDD/F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]; 
+        function mapToCupSize(band,volume) {
+        
+          var cupID = volToCupID(volume)
+          var giga = 0;
+        
+          var cupIndex = Math.max(cupID-((band-28)/2),0);
+          if (cupIndex < 0.5) {
+            return cups[0];
+          }
+        
+          while (cupIndex > cups.length-1+.5) {
+            giga+=1;
+            cupIndex-=cups.length-1;
+            //return "Too big for cup sizes"
+          }
+          if (giga > 0) {
+            return band+"Giga"+cups[giga]+"+"+cups[Math.round(cupIndex)]
+          }
+          return band + cups[Math.round(cupIndex)]
+        }
+        
+        function volToCupID(volume) {
+          //return ( (-2.63291+(33.99972*volume/2-4598.12586)**.5)/16.99986 )
+          if (volume/2 <= 88.506) {
+            return 0;
+          }
+          return 0.225777347+(32.16452*volume/2-2846.74336)**.5/16.08226
+        }
+        function cupIDToVol(id) {
+          return 2*(8.04113*id**2+-3.63101*id+88.9156)
+        }
         
         const firebaseConfig = {
             apiKey: "AIzaSyBOr937VuJhYZknU44JbLgCc3d_5Yssdqk",
@@ -117,7 +150,7 @@
             document.body.innerHTML = "<h1>No Subject ID provided</h1>";
         }
 
-        document.getElementById('takeMeasurements').onclick = function() {
+        document.getElementById('takeMeasurementsBtn').onclick = function() {
             updateBustSize(subjectID)
         };
         
