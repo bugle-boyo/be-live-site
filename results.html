@@ -100,7 +100,6 @@
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     // If subject ID exists, redirect to the results page
-                    updateBustSize(subjectID)
                     const volume = snapshot.val().breastVolume
                     document.getElementById('breastVolume').textContent = volume;
                 } else {
