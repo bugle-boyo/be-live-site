@@ -4,10 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Query</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+    </style>
+    
 </head>
 <body>
-    <h1>Firebase Database Query</h1>
-    <div id="output"></div>
+    <div class="container">
+        <h1>Enter Subject ID</h1>
+        <input type="text" id="subjectID" placeholder="Subject ID" required>
+        <button id="submitBtn">Submit</button>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
@@ -30,26 +47,26 @@
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        
 
-        // Reference to the database (adjust based on your structure)
-        const dbRef = database.ref('users'); // Assuming your data is under 'entries'
+        document.getElementById('submitBtn').onclick = function() {
+            const subjectID = document.getElementById('subjectID').value;
+            const subjectRef = database.ref('users/' + subjectID); // Adjust the path as necessary
 
-        // Querying the database and displaying results
-        dbRef.once('value', (snapshot) => {
-            const data = snapshot.val();
-            let output = '';
-
-            if (data) {
-                Object.keys(data).forEach(key => {
-                    const entry = data[key];
-                    output += `<p>Username: ${entry.name}, Breast Volume: ${entry.breastVolume}</p>`;
+            subjectRef.once('value')
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        // If subject ID exists, redirect to the results page
+                        window.location.href = `results.html?subjectID=${subjectID}`;
+                    } else {
+                        // If not found, alert the user
+                        alert("User does not exist.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching data: ", error);
                 });
-            } else {
-                output = '<p>No entries found</p>';
-            }
-
-            document.getElementById('output').innerHTML = output;
-        });
+        };
     </script>
 </body>
 </html>
