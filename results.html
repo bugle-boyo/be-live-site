@@ -50,6 +50,29 @@
     
     <script type="module">
 
+      // Function to update the bust size based on growth rate
+      function updateBustSize(userId) {
+        firebase.database().ref('users').child(userId).once('value', function(snapshot) {
+          const user = snapshot.val();
+          if (user) {
+            const currentTime = Date.now();
+            const timeSinceLastUpdate = currentTime - user.lastUpdate;
+            const growthFactor = user.growthRate / ( 1000); // Convert growthRate to per-millisecond
+            const bustSizeIncrease = growthFactor * timeSinceLastUpdate;
+            const updatedBustSize = user.breastVolume + bustSizeIncrease;
+              console.log(growthFactor);
+              console.log(timeSinceLastUpdate);
+              console.log(bustSizeIncrease);
+            const updates = {
+              breastVolume: updatedBustSize,
+              lastUpdate: currentTime
+            };
+    
+            firebase.database().ref('users').child(userId).update(updates);
+          }
+        });
+      }
+        
         const firebaseConfig = {
             apiKey: "AIzaSyBOr937VuJhYZknU44JbLgCc3d_5Yssdqk",
             authDomain: "realtime-be-backend.firebaseapp.com",
@@ -75,6 +98,7 @@
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     // If subject ID exists, redirect to the results page
+                    updateBustSize(subjectID)
                     const volume = snapshot.val().breastVolume
                     document.getElementById('breastVolume').textContent = volume;
                 } else {
